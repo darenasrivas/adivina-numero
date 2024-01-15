@@ -1,9 +1,11 @@
 // configurar la aplicación
 const mensajeInicial = 'Empieza a adivinar...'
+const SCORE = 20
+
+// variables de la aplicación
 let score = 20
 let highScore = 0
-const secretNumber = Math.trunc(Math.random() * 20) + 1
-const emoji = ':D'
+let secretNumber = Math.trunc(Math.random() * 20) + 1
 
 // seleccionar elementos del DOM
 const messageField = document.querySelector('.message')
@@ -45,6 +47,7 @@ checkButton.addEventListener('click', () => {
     // ha ganado...
     messageField.textContent = 'Correcto!'
     checkButton.disabled = true
+    secretNumberField.style.backgroundColor = 'yellow'
     // cambiar fondo de pantalla
     document.body.style.backgroundColor = 'limegreen'
     // mostrar el número secreto
@@ -59,8 +62,28 @@ checkButton.addEventListener('click', () => {
   // compararlo con el secretNumber
 })
 
-againButton.addEventListener('click', () => {
-  document.body.style.backgroundColor = '#222'
-  scoreField.textContent = 20
+function initApp() {
+  checkButton.disabled = false
+  guessNumberField.value = ''
+  // Inicializar score
+  // FIXME: ERRORES
+
+  score = SCORE
+  scoreField.textContent = score
+
+  // TODO: inicializar highscore
+  // habría que leer de algún almacenamiento: cookies...
+
+  // Inicializar texto
   messageField.textContent = mensajeInicial
-})
+
+  // Inicializar número secreto
+  secretNumber = Math.trunc(Math.random() * 20) + 1
+  secretNumberField.textContent = '?'
+
+  // Inicializar color de fondo
+  document.body.style.backgroundColor = '#222'
+  secretNumberField.style.backgroundColor = '#fff'
+}
+
+againButton.addEventListener('click', initApp)
