@@ -1,10 +1,11 @@
 // configurar la aplicación
 const mensajeInicial = 'Empieza a adivinar...'
-const SCORE = 20
+const INIT_SCORE = 20
+const INIT_HIGH_SCORE = 0
 
 // variables de la aplicación
-let score = 20
-let highScore = 0
+let score
+let highScore
 let secretNumber = Math.trunc(Math.random() * 20) + 1
 
 // seleccionar elementos del DOM
@@ -17,9 +18,7 @@ const againButton = document.querySelector('.again')
 const guessNumberField = document.querySelector('.guess')
 
 // inicializar la aplicación
-messageField.textContent = mensajeInicial
-scoreField.textContent = score
-highScoreField.textContent = highScore
+initApp()
 
 // funcionalidad de la aplicación
 
@@ -33,7 +32,7 @@ checkButton.addEventListener('click', () => {
     // actualizar el mensaje
     // actualizar el score
     score--
-    scoreField.textContent = score
+    scoreField.textContent = INIT_SCORE
     document.body.style.backgroundColor = 'tomato'
     messageField.textContent = 'Te has pasado'
   } else if (guessNumber < secretNumber) {
@@ -55,6 +54,7 @@ checkButton.addEventListener('click', () => {
     // actualizar el highScore
     if (score > highScore) {
       highScore = score
+      localStorage.setItem('highscore', highScore)
       highScoreField.textContent = score
     }
   }
@@ -68,11 +68,19 @@ function initApp() {
   // Inicializar score
   // FIXME: ERRORES
 
-  score = SCORE
+  score = INIT_SCORE
   scoreField.textContent = score
 
   // TODO: inicializar highscore
   // habría que leer de algún almacenamiento: cookies...
+  // Si no está inicializarlo con init_high_score
+  // || Primer valor no nulo. Si es nulo, usease 0, coje el highscore
+  highScore = Number(localStorage.getItem('highscore')) || INIT_HIGH_SCORE
+
+  // Pendiente añadir excepciones? try-catch
+
+  // Ver en pantalla
+  highScoreField.textContent = highScore
 
   // Inicializar texto
   messageField.textContent = mensajeInicial
